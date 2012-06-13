@@ -1,0 +1,41 @@
+#package
+
+public class #wrapper {
+	private final #basicTypeClass #fieldName;
+
+	public static #wrapper #fieldName(#basicTypeClass #fieldName) {
+		return (#fieldName == null) ? null : new #wrapper(#fieldName);
+	}
+
+	public #wrapper(#basicTypeClass #fieldName) {
+		if (#fieldName == null)
+			throw new IllegalArgumentException("Cannot wrap null.");
+		this.#fieldName = #fieldName;
+	}
+
+	public #basicType #nameOfValueMethod() {
+		return #fieldName;
+	}
+
+	@Override
+	public int hashCode() {
+		return #fieldName.hashCode();
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		#wrapper other = (#wrapper) obj;
+		return (#fieldName.equals(other.#fieldName));
+	}
+
+	@Override
+	public String toString() {
+		return #fieldName.toString();
+	}
+}

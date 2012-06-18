@@ -4,13 +4,10 @@ import static com.github.stefanbirkner.semanticwrapper.generator.Request.generat
 import static org.hamcrest.Matchers.containsInAnyOrder;
 import static org.hamcrest.Matchers.equalTo;
 import static org.junit.Assert.assertThat;
-
 import java.io.File;
 import java.net.URISyntaxException;
 import java.util.Collection;
-
 import org.junit.Test;
-
 import com.github.stefanbirkner.semanticwrapper.generator.Request;
 import com.github.stefanbirkner.semanticwrapper.maven.ConfigurationReader;
 
@@ -25,6 +22,11 @@ public class ConfigurationReaderTest {
     @Test
     public void readsConfigurationWithSpaces() throws Exception {
         assertConfigurationIsParsedCorrect("configuration_with_spaces");
+    }
+
+    @Test
+    public void ignoresBlankLines() throws Exception {
+        assertConfigurationIsParsedCorrect("configuration_with_blank_lines");
     }
 
     private void assertConfigurationIsParsedCorrect(String configurationName) throws URISyntaxException {

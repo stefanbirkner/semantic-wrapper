@@ -2,19 +2,19 @@
 	<modelVersion>4.0.0</modelVersion>
 	<parent>
 		<groupId>com.github.stefanbirkner</groupId>
-		<artifactId>no-primitives-parent</artifactId>
+		<artifactId>semantic-wrapper-parent</artifactId>
 		<version>0.3.0-SNAPSHOT</version>
 		<relativePath>../pom.xml</relativePath>
 	</parent>
-	<artifactId>no-primitives-maven-plugin</artifactId>
+	<artifactId>semantic-wrapper-maven-plugin</artifactId>
 	<packaging>maven-plugin</packaging>
 
-	<name>No Primitives Maven Plugin</name>
+	<name>Semantic Wrapper Maven Plugin</name>
 
 	<dependencies>
 		<dependency>
 			<groupId>com.github.stefanbirkner</groupId>
-			<artifactId>no-primitives</artifactId>
+			<artifactId>semantic-wrapper</artifactId>
 			<version>${project.version}</version>
 		</dependency>
 		<dependency>

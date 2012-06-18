@@ -1,0 +1,2 @@
+com.github.stefanbirkner.semanticwrapper.maven.test.Name : String
+com.github.stefanbirkner.semanticwrapper.maven.test.OrderNumber : int

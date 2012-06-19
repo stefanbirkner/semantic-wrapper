@@ -29,6 +29,11 @@ public class ConfigurationReaderTest {
         assertConfigurationIsParsedCorrect("configuration_with_blank_lines");
     }
 
+    @Test
+    public void ignoresComments() throws Exception {
+        assertConfigurationIsParsedCorrect("configuration_with_comments");
+    }
+
     private void assertConfigurationIsParsedCorrect(String configurationName) throws URISyntaxException {
         File configuration = new File(getClass().getResource(configurationName).toURI());
         Collection<Request> requests = configurationReader.requestsFromConfigurationFile(configuration);

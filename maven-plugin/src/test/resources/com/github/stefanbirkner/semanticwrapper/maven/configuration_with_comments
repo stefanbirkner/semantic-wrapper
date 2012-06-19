@@ -1,0 +1,3 @@
+#comment at the beginning
+com.github.stefanbirkner.semanticwrapper.maven.test.Name : String #comment at the end of the line (with whitespace before)
+com.github.stefanbirkner.semanticwrapper.maven.test.OrderNumber : int#comment at the end of the line (without whitespace before)

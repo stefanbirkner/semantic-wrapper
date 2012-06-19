@@ -13,7 +13,8 @@ import static org.apache.commons.lang3.builder.HashCodeBuilder.reflectionHashCod
 public class Request {
     public final String nameOfWrappersPackage;
     public final String nameOfWrappersClass;
-    public final String nameOfBasicType;
+    public final String nameOfBasicTypesPackage;
+    public final String nameOfBasicTypeOrItsClass;
 
     public static Request generateWrapperClassForBasicType(String nameOfWrapperClass, String nameOfBasicType) {
         return new Request(nameOfWrapperClass, nameOfBasicType);
@@ -21,9 +22,11 @@ public class Request {
 
     private Request(String nameOfWrapperClass, String nameOfBasicType) {
         notNull(nameOfWrapperClass, "The name of the wrapper class is missing.");
+        notNull(nameOfBasicType, "The name of the basic type is missing.");
         this.nameOfWrappersPackage = packageNameOfClass(nameOfWrapperClass);
         this.nameOfWrappersClass = nameOfClass(nameOfWrapperClass);
-        this.nameOfBasicType = notNull(nameOfBasicType, "The name of the basic type is missing.");
+        this.nameOfBasicTypesPackage = packageNameOfClass(nameOfBasicType);
+        this.nameOfBasicTypeOrItsClass = nameOfClass(nameOfBasicType);
     }
 
     private String packageNameOfClass(String className) {
@@ -63,7 +66,11 @@ public class Request {
         }
         sb.append(nameOfWrappersClass);
         sb.append(" for the basic type ");
-        sb.append(nameOfBasicType);
+        if (nameOfBasicTypesPackage != null) {
+            sb.append(nameOfBasicTypesPackage);
+            sb.append(".");
+        }
+        sb.append(nameOfBasicTypeOrItsClass);
         sb.append(".");
         return sb.toString();
     }

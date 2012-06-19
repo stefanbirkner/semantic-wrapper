@@ -10,8 +10,8 @@ import java.util.Map;
  */
 public class CodeGenerator {
     private static final ObjectWrapperGenerator OBJECT_WRAPPER_GENERATOR = new ObjectWrapperGenerator();
-    private final Map<String, SemanticWrapperGenerator> semanticWrapperGenerators =
-        new HashMap<String, SemanticWrapperGenerator>();
+    private final Map<String, PrimitiveDataTypeWrapperGenerator> semanticWrapperGenerators =
+        new HashMap<String, PrimitiveDataTypeWrapperGenerator>();
 
     public CodeGenerator() {
         addGenerator("char", "Character");
@@ -25,17 +25,17 @@ public class CodeGenerator {
     }
 
     private void addGenerator(String supportedType, String classForType) {
-        SemanticWrapperGenerator generator = new SemanticWrapperGenerator(supportedType, classForType);
+        PrimitiveDataTypeWrapperGenerator generator = new PrimitiveDataTypeWrapperGenerator(supportedType, classForType);
         semanticWrapperGenerators.put(supportedType, generator);
     }
 
     public String createCodeForRequest(Request request) {
-        GeneratorTemplate generator = generatorForType(request.nameOfBasicType);
+        GeneratorTemplate generator = generatorForType(request.nameOfBasicTypeOrItsClass);
         return generator.createCodeForRequest(request);
     }
 
     private GeneratorTemplate generatorForType(String type) {
-        SemanticWrapperGenerator generator = semanticWrapperGenerators.get(type);
+        PrimitiveDataTypeWrapperGenerator generator = semanticWrapperGenerators.get(type);
         return defaultIfNull(generator, OBJECT_WRAPPER_GENERATOR);
     }
 }

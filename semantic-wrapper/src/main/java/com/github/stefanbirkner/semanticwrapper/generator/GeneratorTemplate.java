@@ -11,10 +11,11 @@ public abstract class GeneratorTemplate {
     public String createCodeForRequest(Request request) {
         String template = classTemplate();
         String code = template.replace("#package", packageLineForRequest(request));
+        code = code.replace("#imports", importsForRequest(request));
         code = code.replace("#wrapper", request.nameOfWrappersClass);
         code = code.replace("#fieldName", uncapitalize(request.nameOfWrappersClass));
         code = code.replace("#basicTypeClass", basicTypeClassForRequest(request));
-        code = code.replace("#basicType", request.nameOfBasicType);
+        code = code.replace("#basicType", request.nameOfBasicTypeOrItsClass);
         return code.replace("#nameOfValueMethod", nameOfValueMethodForRequest(request));
     }
 
@@ -32,7 +33,9 @@ public abstract class GeneratorTemplate {
         return noPackage ? "" : "package " + request.nameOfWrappersPackage + ";";
     }
 
-    protected abstract String basicTypeClassForRequest(Request request);
+    protected abstract CharSequence importsForRequest(Request request);
 
-    protected abstract String nameOfValueMethodForRequest(Request request);
+    protected abstract CharSequence basicTypeClassForRequest(Request request);
+
+    protected abstract CharSequence nameOfValueMethodForRequest(Request request);
 }

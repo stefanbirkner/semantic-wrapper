@@ -8,8 +8,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import org.apache.commons.io.IOUtils;
 import org.junit.Test;
-import com.github.stefanbirkner.semanticwrapper.generator.CodeGenerator;
-import com.github.stefanbirkner.semanticwrapper.generator.Request;
 
 public class CodeGeneratorTest {
     private final CodeGenerator generator = new CodeGenerator();
@@ -19,6 +17,13 @@ public class CodeGeneratorTest {
         Request request = generateWrapperClassForBasicType("com.github.stefanbirkner.semanticwrapper.generator.Name",
                 "String");
         assertCodeGeneratedForRequest("Name.java", request);
+    }
+
+    @Test
+    public void createsCharWrapper() throws Exception {
+        Request request = generateWrapperClassForBasicType(
+                "com.github.stefanbirkner.semanticwrapper.generator.FirstLetter", "char");
+        assertCodeGeneratedForRequest("FirstLetter.java", request);
     }
 
     @Test
@@ -45,6 +50,7 @@ public class CodeGeneratorTest {
         InputStream is = getClass().getResourceAsStream(resourceName);
         String expectedCode = IOUtils.toString(is);
         String generatedCode = generator.createCodeForRequest(request);
+        org.junit.Assert.assertEquals(generatedCode, expectedCode);
         assertThat(generatedCode, is(equalTo(expectedCode)));
     }
 }

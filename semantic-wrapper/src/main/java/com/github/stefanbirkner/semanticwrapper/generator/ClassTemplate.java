@@ -1,17 +1,15 @@
 package com.github.stefanbirkner.semanticwrapper.generator;
 
 import static org.apache.commons.lang3.StringUtils.uncapitalize;
-
 import java.io.IOException;
 import java.io.InputStream;
-
 import org.apache.commons.io.IOUtils;
 
-public abstract class GeneratorTemplate {
+public abstract class ClassTemplate {
     public String createCodeForRequest(Request request) {
-        String template = classTemplate();
-        String code = template.replace("#package", packageLineForRequest(request));
+        String code = rawTemplate().replace("#package", packageLineForRequest(request));
         code = code.replace("#imports", importsForRequest(request));
+        code = code.replace("#additionalClassMethods", additionalClassMethodsForRequest(request));
         code = code.replace("#wrapper", request.nameOfWrappersClass);
         code = code.replace("#fieldName", uncapitalize(request.nameOfWrappersClass));
         code = code.replace("#basicTypeClass", basicTypeClassForRequest(request));
@@ -19,7 +17,7 @@ public abstract class GeneratorTemplate {
         return code.replace("#nameOfValueMethod", nameOfValueMethodForRequest(request));
     }
 
-    private String classTemplate() {
+    private String rawTemplate() {
         try {
             InputStream is = getClass().getResourceAsStream("class.template");
             return IOUtils.toString(is);
@@ -34,6 +32,8 @@ public abstract class GeneratorTemplate {
     }
 
     protected abstract CharSequence importsForRequest(Request request);
+
+    protected abstract CharSequence additionalClassMethodsForRequest(Request request);
 
     protected abstract CharSequence basicTypeClassForRequest(Request request);
 

@@ -6,7 +6,7 @@ public class #wrapper {
 	public static #wrapper #fieldName(#basicTypeClass #fieldName) {
 		return (#fieldName == null) ? null : new #wrapper(#fieldName);
 	}
-
+#additionalClassMethods
 	public #wrapper(#basicTypeClass #fieldName) {
 		if (#fieldName == null)
 			throw new IllegalArgumentException("Cannot wrap null.");

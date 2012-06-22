@@ -2,11 +2,16 @@ package com.github.stefanbirkner.semanticwrapper.generator;
 
 import static org.apache.commons.lang3.StringUtils.uncapitalize;
 
-public class ObjectWrapperGenerator extends GeneratorTemplate {
+public class ObjectWrapperTemplate extends ClassTemplate {
     @Override
     protected CharSequence importsForRequest(Request request) {
         return (request.nameOfBasicTypesPackage == null) ? "" : "\nimport " + request.nameOfBasicTypesPackage + "."
                 + request.nameOfBasicTypeOrItsClass + ";\n";
+    }
+
+    @Override
+    protected CharSequence additionalClassMethodsForRequest(Request request) {
+        return "";
     }
 
     @Override

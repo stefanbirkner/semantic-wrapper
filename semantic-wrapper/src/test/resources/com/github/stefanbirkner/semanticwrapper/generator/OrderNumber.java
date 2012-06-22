@@ -1,10 +1,16 @@
 package com.github.stefanbirkner.semanticwrapper.generator;
 
+import static java.lang.Integer.parseInt;
+
 public class OrderNumber {
 	private final Integer orderNumber;
 
 	public static OrderNumber orderNumber(Integer orderNumber) {
 		return (orderNumber == null) ? null : new OrderNumber(orderNumber);
+	}
+
+	public static OrderNumber parseOrderNumber(String text) {
+		return ((text == null) || text.isEmpty()) ? null : new OrderNumber(parseInt(text));
 	}
 
 	public OrderNumber(Integer orderNumber) {

@@ -1,19 +1,30 @@
 package com.github.stefanbirkner.semanticwrapper.generator;
 
-import static org.apache.commons.lang3.Validate.notNull;
+import java.util.HashMap;
+import java.util.Map;
 
 public class ParsablePrimitiveDataTypeWrapperTemplate extends ClassTemplate {
-    private final String supportedType;
-    private final String classForType;
+    private static final Map<String, String> CLASSES_FOR_PRIMITIVE_DATA_TYPES = new HashMap<String, String>() {
+        {
+            put("byte", "Byte");
+            put("short", "Short");
+            put("int", "Integer");
+            put("long", "Long");
+            put("byte", "Byte");
+            put("boolean", "Boolean");
+            put("float", "Float");
+            put("double", "Double");
+        }
+    };
 
-    public ParsablePrimitiveDataTypeWrapperTemplate(String supportedType, String classForType) {
-        this.supportedType = notNull(supportedType, "The supported type is missing.");
-        this.classForType = notNull(classForType, "The class for type is missing.");
+    @Override
+    public boolean canCreateWrapperForRequest(Request request) {
+        return CLASSES_FOR_PRIMITIVE_DATA_TYPES.containsKey(request.nameOfBasicTypeOrItsClass);
     }
 
     @Override
     protected CharSequence importsForRequest(Request request) {
-        return "\nimport static java.lang." + classForType + "." + parseMethodForRequest(request) + ";\n";
+        return "\nimport static java.lang." + classForRequest(request) + "." + parseMethodForRequest(request) + ";\n";
     }
 
     @Override
@@ -24,17 +35,22 @@ public class ParsablePrimitiveDataTypeWrapperTemplate extends ClassTemplate {
     }
 
     private String parseMethodForRequest(Request request) {
-        String capitalizedSupportedType = supportedType.substring(0, 1).toUpperCase() + supportedType.substring(1);
+        String capitalizedSupportedType = request.nameOfBasicTypeOrItsClass.substring(0, 1).toUpperCase()
+                + request.nameOfBasicTypeOrItsClass.substring(1);
         return "parse" + capitalizedSupportedType;
     }
 
     @Override
     protected String basicTypeClassForRequest(Request request) {
-        return classForType;
+        return classForRequest(request);
     }
 
     @Override
     protected String nameOfValueMethodForRequest(Request request) {
-        return supportedType + "Value";
+        return request.nameOfBasicTypeOrItsClass + "Value";
+    }
+
+    private String classForRequest(Request request) {
+        return CLASSES_FOR_PRIMITIVE_DATA_TYPES.get(request.nameOfBasicTypeOrItsClass);
     }
 }

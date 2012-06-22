@@ -4,6 +4,11 @@ import static org.apache.commons.lang3.StringUtils.uncapitalize;
 
 public class ObjectWrapperTemplate extends ClassTemplate {
     @Override
+    public boolean canCreateWrapperForRequest(Request request) {
+        return true;
+    }
+
+    @Override
     protected CharSequence importsForRequest(Request request) {
         return (request.nameOfBasicTypesPackage == null) ? "" : "\nimport " + request.nameOfBasicTypesPackage + "."
                 + request.nameOfBasicTypeOrItsClass + ";\n";

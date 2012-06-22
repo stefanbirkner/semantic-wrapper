@@ -6,7 +6,16 @@ import java.io.InputStream;
 import org.apache.commons.io.IOUtils;
 
 public abstract class ClassTemplate {
+    public abstract boolean canCreateWrapperForRequest(Request request);
+
     public String createCodeForRequest(Request request) {
+        if (canCreateWrapperForRequest(request))
+            return createCodeForValidRequest(request);
+        else
+            throw new IllegalArgumentException("Cannot create wrapper for request " + request + ".");
+    }
+
+    private String createCodeForValidRequest(Request request) {
         String code = rawTemplate().replace("#package", packageLineForRequest(request));
         code = code.replace("#imports", importsForRequest(request));
         code = code.replace("#additionalClassMethods", additionalClassMethodsForRequest(request));

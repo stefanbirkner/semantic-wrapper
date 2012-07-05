@@ -20,10 +20,11 @@ public abstract class ClassTemplate {
         code = code.replace("#imports", importsForRequest(request));
         code = code.replace("#additionalClassMethods", additionalClassMethodsForRequest(request));
         code = code.replace("#wrapper", request.nameOfWrappersClass);
-        code = code.replace("#fieldName", uncapitalize(request.nameOfWrappersClass));
+        code = code.replace("#fieldName", fieldNameForRequest(request));
         code = code.replace("#basicTypeClass", basicTypeClassForRequest(request));
         code = code.replace("#basicType", request.nameOfBasicTypeOrItsClass);
-        return code.replace("#nameOfValueMethod", nameOfValueMethodForRequest(request));
+        code = code.replace("#nameOfValueMethod", nameOfValueMethodForRequest(request));
+        return code.replace("#toStringTerm", toStringTermForRequest(request));
     }
 
     private String rawTemplate() {
@@ -44,7 +45,15 @@ public abstract class ClassTemplate {
 
     protected abstract CharSequence additionalClassMethodsForRequest(Request request);
 
+    protected String fieldNameForRequest(Request request) {
+        return uncapitalize(request.nameOfWrappersClass);
+    }
+
     protected abstract CharSequence basicTypeClassForRequest(Request request);
 
     protected abstract CharSequence nameOfValueMethodForRequest(Request request);
+
+    protected CharSequence toStringTermForRequest(Request request) {
+        return fieldNameForRequest(request) + ".toString()";
+    }
 }

@@ -36,6 +36,6 @@ public class Name {
 
 	@Override
 	public String toString() {
-		return name.toString();
+		return name;
 	}
 }

@@ -36,6 +36,6 @@ public class #wrapper {
 
 	@Override
 	public String toString() {
-		return #fieldName.toString();
+		return #toStringTerm;
 	}
 }

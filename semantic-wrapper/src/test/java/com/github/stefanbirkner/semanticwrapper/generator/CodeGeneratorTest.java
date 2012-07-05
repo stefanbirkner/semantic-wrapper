@@ -50,7 +50,7 @@ public class CodeGeneratorTest {
         InputStream is = getClass().getResourceAsStream(resourceName);
         String expectedCode = IOUtils.toString(is);
         String generatedCode = generator.createCodeForRequest(request);
-        org.junit.Assert.assertEquals(generatedCode, expectedCode);
+        org.junit.Assert.assertEquals(expectedCode, generatedCode);
         assertThat(generatedCode, is(equalTo(expectedCode)));
     }
 }

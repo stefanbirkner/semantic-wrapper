@@ -9,7 +9,8 @@ import java.util.List;
  */
 public class CodeGenerator {
     private static final List<? extends ClassTemplate> CLASS_TEMPLATES = asList(
-            new ParsablePrimitiveDataTypeWrapperTemplate(), new CharWrapperTemplate(), new ObjectWrapperTemplate());
+            new ParsablePrimitiveDataTypeWrapperTemplate(), new CharWrapperTemplate(), new StringWrapperTemplate(),
+            new ObjectWrapperTemplate());
 
     public String createCodeForRequest(Request request) {
         ClassTemplate template = templateForRequest(request);

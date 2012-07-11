@@ -1,5 +1,6 @@
 package com.github.stefanbirkner.semanticwrapper.maven;
 
+import static java.util.Collections.emptyList;
 import static org.apache.maven.plugins.annotations.LifecyclePhase.GENERATE_SOURCES;
 
 import java.io.File;
@@ -24,6 +25,7 @@ import com.github.stefanbirkner.semanticwrapper.generator.Request;
 public class GenerateClassesMojo extends AbstractMojo {
     private static final ConfigurationReader CONFIGURATION_READER = new ConfigurationReader();
     private static final CodeGenerator CODE_GENERATOR = new CodeGenerator();
+    private static final Collection<Request> NO_REQUESTS = emptyList();
 
     @Parameter(defaultValue = "${project}", required = true, readonly = true)
     private MavenProject project;
@@ -49,9 +51,33 @@ public class GenerateClassesMojo extends AbstractMojo {
     }
 
     private Collection<Request> requestsFromConfigurationFiles() {
+        if (configurationDirectory.exists())
+            if (configurationDirectory.isDirectory())
+                return requestsFromConfigurationFiles(configurationDirectory.listFiles());
+            else
+                return noRequests(configurationDirectory.getAbsolutePath() + " is not a directory.");
+        else
+            return noRequests("The directory of the configuration files is missing.");
+    }
+
+    private Collection<Request> requestsFromConfigurationFiles(File[] files) {
+        File[] configurationFiles = configurationDirectory.listFiles();
+        if (configurationFiles.length == 0)
+            return noRequests("The directory " + configurationDirectory.getAbsolutePath()
+                + " has no configuration files.");
+        else
+            return requestsForConfigurationFiles(configurationFiles);
+    }
+
+    private Collection<Request> requestsForConfigurationFiles(File[] configurationFiles) {
         Set<Request> requests = new HashSet<Request>();
-        for (File configurationFile : configurationDirectory.listFiles())
+        for (File configurationFile : configurationFiles)
             requests.addAll(CONFIGURATION_READER.requestsFromConfigurationFile(configurationFile));
         return requests;
+    }
+
+    private Collection<Request> noRequests(String logMessage) {
+        getLog().warn(logMessage);
+        return NO_REQUESTS;
     }
 }

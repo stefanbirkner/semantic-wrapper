@@ -52,21 +52,19 @@ public class GenerateClassesMojo extends AbstractMojo {
 
     private Collection<Request> requestsFromConfigurationFiles() {
         if (configurationDirectory.exists())
-            if (configurationDirectory.isDirectory())
-                return requestsFromConfigurationFiles(configurationDirectory.listFiles());
-            else
-                return noRequests(configurationDirectory.getAbsolutePath() + " is not a directory.");
+            return requestsFromConfigurationFiles(configurationDirectory.listFiles());
         else
             return noRequests("The directory of the configuration files is missing.");
     }
 
     private Collection<Request> requestsFromConfigurationFiles(File[] files) {
-        File[] configurationFiles = configurationDirectory.listFiles();
-        if (configurationFiles.length == 0)
+        if (files == null)
+            return noRequests(configurationDirectory.getAbsolutePath() + " is not a directory.");
+        if (files.length == 0)
             return noRequests("The directory " + configurationDirectory.getAbsolutePath()
                 + " has no configuration files.");
         else
-            return requestsForConfigurationFiles(configurationFiles);
+            return requestsForConfigurationFiles(files);
     }
 
     private Collection<Request> requestsForConfigurationFiles(File[] configurationFiles) {

@@ -29,7 +29,7 @@ public abstract class ClassTemplate {
 
     private String rawTemplate() {
         try {
-            InputStream is = getClass().getResourceAsStream("class.template");
+            InputStream is = ClassTemplate.class.getResourceAsStream("class.template");
             return IOUtils.toString(is);
         } catch (IOException e) {
             throw new RuntimeException(e);

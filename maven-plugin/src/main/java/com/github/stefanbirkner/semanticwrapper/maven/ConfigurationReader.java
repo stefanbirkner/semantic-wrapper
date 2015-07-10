@@ -1,10 +1,9 @@
 package com.github.stefanbirkner.semanticwrapper.maven;
 
 import static com.github.stefanbirkner.semanticwrapper.generator.Request.generateWrapperClassForBasicType;
-import static org.apache.commons.io.IOUtils.readLines;
+import static org.apache.commons.io.FileUtils.readLines;
 
 import java.io.File;
-import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -26,7 +25,7 @@ public class ConfigurationReader {
 
     private Iterable<String> linesOfFile(File file) {
         try {
-            return readLines(new FileReader(file));
+            return readLines(file, "UTF-8");
         } catch (IOException e) {
             throw new RuntimeException(e);
         }

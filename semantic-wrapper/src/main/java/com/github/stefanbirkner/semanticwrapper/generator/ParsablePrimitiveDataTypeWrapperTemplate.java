@@ -1,6 +1,7 @@
 package com.github.stefanbirkner.semanticwrapper.generator;
 
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Map;
 
 public class ParsablePrimitiveDataTypeWrapperTemplate extends ClassTemplate {
@@ -35,7 +36,7 @@ public class ParsablePrimitiveDataTypeWrapperTemplate extends ClassTemplate {
     }
 
     private String parseMethodForRequest(Request request) {
-        String capitalizedSupportedType = request.nameOfBasicTypeOrItsClass.substring(0, 1).toUpperCase()
+        String capitalizedSupportedType = request.nameOfBasicTypeOrItsClass.substring(0, 1).toUpperCase(Locale.US)
                 + request.nameOfBasicTypeOrItsClass.substring(1);
         return "parse" + capitalizedSupportedType;
     }

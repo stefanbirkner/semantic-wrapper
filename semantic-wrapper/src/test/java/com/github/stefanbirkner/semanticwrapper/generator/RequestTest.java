@@ -10,7 +10,6 @@ import static org.junit.rules.ExpectedException.none;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
-import com.github.stefanbirkner.semanticwrapper.generator.Request;
 
 public class RequestTest {
     private static final String NO_NAME = null;

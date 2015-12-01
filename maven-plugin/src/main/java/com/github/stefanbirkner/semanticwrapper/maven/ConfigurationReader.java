@@ -32,7 +32,7 @@ public class ConfigurationReader {
     }
 
     private Iterable<String> removeCommentsFromLines(Iterable<String> lines) {
-        List<String> linesWithoutComments = new ArrayList<String>();
+        List<String> linesWithoutComments = new ArrayList<>();
         for (String line : lines)
             linesWithoutComments.add(removeCommentFromLine(line));
         return linesWithoutComments;
@@ -46,7 +46,7 @@ public class ConfigurationReader {
     }
 
     private Iterable<String> removeBlankLines(Iterable<String> lines) {
-        List<String> nonBlankLines = new ArrayList<String>();
+        List<String> nonBlankLines = new ArrayList<>();
         for (String line : lines)
             if (isNotBlank(line))
                 nonBlankLines.add(line);
@@ -58,7 +58,7 @@ public class ConfigurationReader {
     }
 
     private Collection<Request> parseRequests(Iterable<String> lines) {
-        Set<Request> requests = new HashSet<Request>();
+        Set<Request> requests = new HashSet<>();
         for (String line : lines)
             addRequest(requests, line);
         return requests;

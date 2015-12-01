@@ -68,7 +68,7 @@ public class GenerateClassesMojo extends AbstractMojo {
     }
 
     private Collection<Request> requestsForConfigurationFiles(File[] configurationFiles) {
-        Set<Request> requests = new HashSet<Request>();
+        Set<Request> requests = new HashSet<>();
         for (File configurationFile : configurationFiles)
             requests.addAll(CONFIGURATION_READER.requestsFromConfigurationFile(configurationFile));
         return requests;

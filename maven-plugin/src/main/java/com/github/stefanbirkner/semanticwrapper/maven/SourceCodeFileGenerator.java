@@ -8,14 +8,17 @@ import java.util.Collection;
 
 import com.github.stefanbirkner.semanticwrapper.generator.CodeGenerator;
 import com.github.stefanbirkner.semanticwrapper.generator.Request;
+import org.sonatype.plexus.build.incremental.BuildContext;
 
 public class SourceCodeFileGenerator {
     private final File baseDir;
     private final CodeGenerator codeGenerator;
+    private BuildContext buildContext;
 
-    public SourceCodeFileGenerator(File baseDir, CodeGenerator codeGenerator) {
+    public SourceCodeFileGenerator(File baseDir, CodeGenerator codeGenerator, BuildContext buildContext) {
         this.baseDir = baseDir;
         this.codeGenerator = codeGenerator;
+        this.buildContext = buildContext;
     }
 
     public void createSourceCodeFilesForRequests(Collection<Request> requests) {
@@ -26,7 +29,9 @@ public class SourceCodeFileGenerator {
     private void createSourceCodeFilesForRequest(Request request) {
         String sourceCode = codeGenerator.createCodeForRequest(request);
         try {
-            write(fileForRequest(request), sourceCode);
+            File file = fileForRequest(request);
+            write(file, sourceCode);
+            buildContext.refresh(file);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }

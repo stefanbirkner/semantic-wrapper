@@ -6,6 +6,7 @@ import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.assertThat;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import java.io.File;
@@ -18,11 +19,12 @@ import org.junit.rules.TemporaryFolder;
 
 import com.github.stefanbirkner.semanticwrapper.generator.CodeGenerator;
 import com.github.stefanbirkner.semanticwrapper.generator.Request;
-import com.github.stefanbirkner.semanticwrapper.maven.SourceCodeFileGenerator;
+import org.sonatype.plexus.build.incremental.BuildContext;
 
 public class SourceCodeFileGeneratorTest {
     private static final String DUMMY_SOURCE_CODE = "dummy source code";
     private final CodeGenerator codeGenerator = mock(CodeGenerator.class);
+    private final BuildContext buildContext = mock(BuildContext.class);
 
     @Rule
     public final TemporaryFolder temporaryFolder = new TemporaryFolder();
@@ -32,9 +34,19 @@ public class SourceCodeFileGeneratorTest {
         Request request = generateWrapperClassForBasicType("package.TestClass", "int");
         when(codeGenerator.createCodeForRequest(request)).thenReturn(DUMMY_SOURCE_CODE);
         File folder = temporaryFolder.newFolder();
-        SourceCodeFileGenerator generator = new SourceCodeFileGenerator(folder, codeGenerator);
+        SourceCodeFileGenerator generator = new SourceCodeFileGenerator(folder, codeGenerator, buildContext);
         generator.createSourceCodeFilesForRequests(singleton(request));
-        File sourceCodeFile = new File(folder.getPath() + "/package/TestClass.java");
+        File sourceCodeFile = new File(folder, "package/TestClass.java");
         assertThat(IOUtils.toString(new FileReader(sourceCodeFile)), is(equalTo(DUMMY_SOURCE_CODE)));
+    }
+
+    @Test
+    public void informsBuildContextAboutGeneratedFiles() throws Exception {
+        Request request = generateWrapperClassForBasicType("package.TestClass", "int");
+        File folder = temporaryFolder.newFolder();
+        SourceCodeFileGenerator generator = new SourceCodeFileGenerator(folder, codeGenerator, buildContext);
+        generator.createSourceCodeFilesForRequests(singleton(request));
+        File sourceCodeFile = new File(folder, "package/TestClass.java");
+        verify(buildContext).refresh(sourceCodeFile);
     }
 }

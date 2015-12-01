@@ -11,12 +11,15 @@ import java.util.Set;
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
+import org.apache.maven.plugins.annotations.Component;
 import org.apache.maven.plugins.annotations.Mojo;
 import org.apache.maven.plugins.annotations.Parameter;
 import org.apache.maven.project.MavenProject;
 
 import com.github.stefanbirkner.semanticwrapper.generator.CodeGenerator;
 import com.github.stefanbirkner.semanticwrapper.generator.Request;
+import org.codehaus.plexus.util.Scanner;
+import org.sonatype.plexus.build.incremental.BuildContext;
 
 /**
  * Create classes using the Semantic Wrapper code generator.
@@ -42,24 +45,32 @@ public class GenerateClassesMojo extends AbstractMojo {
     @Parameter(defaultValue = "src/main/semantic-wrapper/", required = true)
     private File configurationDirectory;
 
+    @Component
+    private BuildContext buildContext;
+
     @Override
     public void execute() throws MojoExecutionException, MojoFailureException {
         Collection<Request> requests = requestsFromConfigurationFiles();
-        SourceCodeFileGenerator generator = new SourceCodeFileGenerator(outputDirectory, CODE_GENERATOR);
+        SourceCodeFileGenerator generator = new SourceCodeFileGenerator(
+            outputDirectory, CODE_GENERATOR, buildContext);
         generator.createSourceCodeFilesForRequests(requests);
         project.addCompileSourceRoot(outputDirectory.getAbsolutePath());
     }
 
     private Collection<Request> requestsFromConfigurationFiles() {
         if (configurationDirectory.exists())
-            return requestsFromConfigurationFiles(configurationDirectory.listFiles());
+            return requestsFromConfigurationFiles(getChangedFiles());
         else
             return noRequests("The directory of the configuration files is missing.");
     }
 
-    private Collection<Request> requestsFromConfigurationFiles(File[] files) {
-        if (files == null)
-            return noRequests(configurationDirectory.getAbsolutePath() + " is not a directory.");
+    private String[] getChangedFiles() {
+        Scanner scanner = buildContext.newScanner(configurationDirectory);
+        scanner.scan();
+        return scanner.getIncludedFiles();
+    }
+
+    private Collection<Request> requestsFromConfigurationFiles(String[] files) {
         if (files.length == 0)
             return noRequests("The directory " + configurationDirectory.getAbsolutePath()
                 + " has no configuration files.");
@@ -67,10 +78,12 @@ public class GenerateClassesMojo extends AbstractMojo {
             return requestsForConfigurationFiles(files);
     }
 
-    private Collection<Request> requestsForConfigurationFiles(File[] configurationFiles) {
+    private Collection<Request> requestsForConfigurationFiles(String[] configurationFiles) {
         Set<Request> requests = new HashSet<>();
-        for (File configurationFile : configurationFiles)
-            requests.addAll(CONFIGURATION_READER.requestsFromConfigurationFile(configurationFile));
+        for (String configurationFile : configurationFiles)
+            requests.addAll(
+                CONFIGURATION_READER.requestsFromConfigurationFile(
+                    new File(configurationDirectory, configurationFile)));
         return requests;
     }
 

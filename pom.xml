@@ -10,7 +10,7 @@
 
     <artifactId>semantic-wrapper-parent</artifactId>
     <packaging>pom</packaging>
-    <version>0.6.0-SNAPSHOT</version>
+    <version>0.6.0</version>
 
     <name>Parent Project of Semantic Wrapper</name>
     <description>Generate wrapper classes with semantics.</description>
@@ -56,6 +56,11 @@
     </properties>
 
     <dependencies>
+        <dependency>
+            <groupId>org.sonatype.plexus</groupId>
+            <artifactId>plexus-build-api</artifactId>
+            <version>0.0.7</version>
+        </dependency>
         <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>

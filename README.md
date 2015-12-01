@@ -18,7 +18,7 @@ Semantic Wrapper is available from
       <plugin>
         <groupId>com.github.stefanbirkner</groupId>
         <artifactId>semantic-wrapper-maven-plugin</artifactId>
-        <version>0.5.0</version>
+        <version>0.6.0</version>
       </plugin>
     </plugins>
 

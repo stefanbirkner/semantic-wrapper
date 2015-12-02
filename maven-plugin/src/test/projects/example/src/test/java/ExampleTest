@@ -1,0 +1,12 @@
+import static org.junit.Assert.assertEquals;
+
+import org.junit.Test;
+import test.ExampleNumber;
+
+public class ExampleTest {
+  @Test
+  public void createsExampleNumber() {
+    ExampleNumber number = new Example().createExampleNumber(4);
+    assertEquals(4, number.intValue());
+  }
+}

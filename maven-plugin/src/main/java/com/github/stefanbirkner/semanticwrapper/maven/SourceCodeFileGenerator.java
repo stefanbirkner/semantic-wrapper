@@ -34,14 +34,12 @@ public class SourceCodeFileGenerator {
 
     private File fileForRequest(Request request) {
         StringBuilder sb = new StringBuilder();
-        sb.append(baseDir.getPath());
-        sb.append("/");
         if (request.nameOfWrappersPackage != null) {
             sb.append(request.nameOfWrappersPackage.replace(".", "/"));
             sb.append("/");
         }
         sb.append(request.nameOfWrappersClass);
         sb.append(".java");
-        return new File(sb.toString());
+        return new File(baseDir, sb.toString());
     }
 }
